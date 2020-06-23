@@ -58,30 +58,29 @@ public class JUnitTests {
 	public void getUserById() {
 		RestAssured.basePath = "/user/{userid}";
 		
-		int userId = 666;
-		String responseBody = given().pathParam("userid", userId).when().get()
-				.then()
+		int userId = 18;
+		String responseBody = given().pathParam("userid", userId).when().get().then()
 				.statusCode(HttpStatus.OK.value())
 				.contentType(ContentType.JSON)
 				.extract().body().asString();
 		
 		assertThatJson(responseBody).isEqualTo(
-				"{\"id\": 666,\r\n" + 
-				"\"first_name\": \"Aviva\",\r\n" + 
-				"\"last_name\": \"Colegrove\",\r\n" + 
-				"\"email\": \"acolegroveih@sogou.com\",\r\n" + 
-				"\"ip_address\": \"105.56.41.74\",\r\n" + 
-				"\"latitude\": 41.6,\r\n" + 
-				"\"longitude\": -93.61,\r\n" +
-				"\"city\": \"Des Moines\"}");
+				"{\"id\": 18,\r\n" + 
+				"\"first_name\": \"Chiquia\",\r\n" + 
+				"\"last_name\": \"Caston\",\r\n" + 
+				"\"email\": \"ccastonh@who.int\",\r\n" + 
+				"\"ip_address\": \"45.121.189.178\",\r\n" + 
+				"\"latitude\": 35.0876436,\r\n" + 
+				"\"longitude\": 36.216972,\r\n" +
+				"\"city\": \"كاف الجاع\"}");
 	}
 
-	
 	@Test
 	public void getUsersByCity() {
 		RestAssured.basePath = "/city/{city}/users";
 		
 		String city = "London";
+
 		String responseBody = given().pathParam("city", city).when().get().then()
 				.statusCode(HttpStatus.OK.value())
 				.contentType(ContentType.JSON)
@@ -98,6 +97,30 @@ public class JUnitTests {
 				"\"ip_address\": \"113.71.242.187\",\r\n" + 
 				"\"latitude\": -6.5115909,\r\n" + 
 				"\"longitude\": 105.652983}");
+	}
+	
+	@Test
+	public void getUsersByCityUTF8() {
+		RestAssured.basePath = "/city/{city}/users";
+		
+		String city = "كاف الجاع";  //Kaff al-Jaa
+
+		String responseBody = given().pathParam("city", city).when().get().then()
+				.statusCode(HttpStatus.OK.value())
+				.contentType(ContentType.JSON)
+				.extract().body().asString();
+		
+		assertThatJson(responseBody).isArray();
+		assertThatJson(responseBody).isArray().hasSize(1);
+		
+		assertThatJson(responseBody).node("[0]").isEqualTo(
+				"{\"id\": 18,\r\n" + 
+				"\"first_name\": \"Chiquia\",\r\n" + 
+				"\"last_name\": \"Caston\",\r\n" + 
+				"\"email\": \"ccastonh@who.int\",\r\n" + 
+				"\"ip_address\": \"45.121.189.178\",\r\n" + 
+				"\"latitude\": 35.0876436,\r\n" + 
+				"\"longitude\": 36.216972}");
 	}
 
 	@Test
