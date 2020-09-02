@@ -1,0 +1,57 @@
+######################
+# Default Profile
+# if no spring profile is set active then the default values here are used
+# they can be selectively overwritten if specified in a spring profile
+######################
+
+# values here used to construct the target URI
+server:
+  scheme: http
+  host: bpdts-test-app-v2.herokuapp.com
+  port: 80
+
+# the folder in src/test/resources where data will be held
+data: data/default
+
+# the 'endpoints' for the API are provided here
+# the path parameters are included here in braces
+# the test code should replace these with test values
+path:
+  instructions: /instructions
+  user: /user/{userId}
+  users: /users
+  city: /city/{city}/users
+
+#
+# logging can be configured here
+#
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+logging:
+  pattern:
+    #console: "%d %-5level %logger{0} : %msg%n"
+    console: "%clr(%d{HH:mm:ss:SSS}){red} %highlight(%-5level) - %clr(%20.20logger{0}){cyan} - %highlight(%msg) %n"
+  level:
+    ROOT: INFO
+    org.springframework: ERROR
+    org.apache.http: INFO
+
+
+######################
+# Profiles
+# multiple spring profiles can be used here to provide different values for URIs etc.
+# the resources folder to use for test data is also set here
+######################
+
+---
+spring:
+  profiles: local
+
+server:
+  scheme: http
+  host: localhost
+  port: 8080
+
+data: data/local
