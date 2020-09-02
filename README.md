@@ -43,37 +43,37 @@ Maven surefire plugin will write basic output by default to target/surefire-repo
 The design and documentation affect the testing as they should provide a statement of how the API is supposed to behave.<br>
 Referring to the following standard https://www.gov.uk/guidance/gds-api-technical-and-data-standards there are some observations below<br>
 
-####Use HTTPS<br>
+##### Use HTTPS<br>
   * API is not HTTPS<br>
 
-####Use of arrays is not recommended<br>
+##### Use of arrays is not recommended<br>
   * API returns array for /users<br>
   * API returns array for /city/{city}/users<br>
 	
 	I think this last one should actually be /users but filtered by city i.e. /users?city={city}<br>
 
-####How to respond to data requests<br>
+##### How to respond to data requests<br>
   * The answer should not return any more detail than is required<br>
   * 404 response returns more than necessary?<br>
 
 
-####Document your API<br>
+##### Document your API<br>
   * Introduce your API: contextual/overview information - what the API does, who it might be used by and under what circumstances<br>
   * nothing provided<br>
-####Provide a short description of each of your API resources <br>
+##### Provide a short description of each of your API resources <br>
   * no descriptions provided - what does latitude and longitude refer to?  clearly not City (London returns a wide range of values - perhaps Country would help) - is it related to ip address?<br>
-####Should use OpenAPI3<br>
+##### Should use OpenAPI3<br>
   * it uses Swagger 2.0<br>
-####provide sample code to illustrate how to call the API and to let users know what responses they can expect<br>
+##### provide sample code to illustrate how to call the API and to let users know what responses they can expect<br>
   * no examples given - relies on the Try It Out service<br>
 	
 https://www.gov.uk/guidance/writing-api-reference-documentation<br>
-####The API reference describes everything the API does including:<br>
+##### The API reference describes everything the API does including:<br>
   * example requests and responses<br>
-####no example data provided<br>
+##### no example data provided<br>
   * 404 error for /user/{id} includes a response body with an undocumented "message" object<br>
 
 
-####No schemas published<br>
-####no header parameters specified although Try it out adds an Accept application/json<br>
+##### No schemas published<br>
+##### no header parameters specified although Try it out adds an Accept application/json<br>
 
