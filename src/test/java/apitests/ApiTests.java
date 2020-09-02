@@ -7,8 +7,11 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,7 @@ mapping from a meaningful key to the actual value to use for this particular env
 @Configuration
 @PropertySource(value = "classpath:${data}/request/test.properties", encoding = "UTF-8")
 @SpringBootTest(classes = {ApiTests.class, Config.class})
+@TestInstance(Lifecycle.PER_CLASS)
 public class ApiTests {
     // log levels can be set in the application.yml
     final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -56,19 +60,10 @@ public class ApiTests {
     @Autowired
     Environment testData;
 
-    static boolean hasRun = false;
-
-    @BeforeEach
+    @BeforeAll
     public void setup() {
 
-        // Would rather this setup was run once but JUnit insists that it is static ig
-        // In this case just log URI on first invocation
-        // TestNG might be a better choice if it allows non-static @BeforeAll annotations
-        if (!hasRun) {
-            hasRun = true;
-            log.info("baseUri is {}", config.baseUri);
-
-        }
+        log.info("baseUri is {}", config.baseUri);
 
         // enable Rest Assured logging for all requests and responses when root log level is set to DEBUG
         if (log.isDebugEnabled()) {
@@ -266,6 +261,7 @@ public class ApiTests {
                 .then().spec(responseSpecOK)
                 .extract().body().asString();
     }
+
     /*
     This method is to reduce duplication of code
     asserts the response for city matches the JSON file named for the city
